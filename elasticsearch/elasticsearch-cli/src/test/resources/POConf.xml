@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PO_CONFIG>
+	<DB_CONNECTION TYPE="oracle" VALID="TRUE">
+		<PROPERTY NAME="DB_URL">jdbc:oracle:thin:@10.2.40.23:1521:orcl</PROPERTY>
+		<PROPERTY NAME="DB_USER">dev</PROPERTY>
+		<PROPERTY NAME="DB_PASSWORD">dev</PROPERTY>
+	</DB_CONNECTION>
+
+	<GEN_PO_PATH NAME="/Users/summer/Documents/Projects/work/CapCenterProj/toolkit/elasticsearch/elasticsearch-cli/src/test/java/cn/nesc/toolkit/es/model/" />
+	<TABLES PACKAGE="cn.nesc.toolkit.es.model" IS_GENERATOR="TRUE">
+		<TABLE TAB_NAME="DMN_CUST_TGPTAPI1AND2" PO_NAME="DmnCustTgptapi1and2PO"></TABLE>
+	</TABLES>
+</PO_CONFIG>

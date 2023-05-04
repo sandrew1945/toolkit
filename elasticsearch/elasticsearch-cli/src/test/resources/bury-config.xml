@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bury>
+	<!--<settings>
+		事务管理方式: 允许值:jdbc|managed 删除该配置
+		<setting name="transactionManager" value="jdbc" />
+	</settings>-->
+	<connections default="oracle">
+		<connection id="oracle">
+			<!-- 数据源类型: 允许值: direct|c3p0|druid -->
+			<property name="datasource" value="druid" />
+			<!-- 数据库类型: 允许值:mysql|oracle|mssql -->
+			<property name="databaseType" value="oracle" />
+			<property name="url" value="jdbc:oracle:thin:@10.2.40.23:1521:orcl" />
+			<property name="username" value="dev" />
+			<property name="password" value="dev" />
+			<property name="initialPoolSize" value="2" />
+			<property name="maxPoolSize" value="4" />
+			<property name="minPoolSize" value="2" />
+			<property name="autocommit" value="false" />
+		</connection>
+	</connections>
+
+
+</bury>
