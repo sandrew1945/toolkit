@@ -19,5 +19,5 @@ package cn.nesc.mailsender.mail;
  **/
 public enum EmailType
 {
-    PLAIN, HTML
+    PLAIN, HTML, MULTIPART
 }

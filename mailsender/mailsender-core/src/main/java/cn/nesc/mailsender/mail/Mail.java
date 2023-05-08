@@ -11,17 +11,14 @@
 
 package cn.nesc.mailsender.mail;
 
-import cn.nesc.mailsender.recipient.RecipientType;
 import cn.nesc.mailsender.exceptions.MailFormatException;
-import cn.nesc.mailsender.recipient.BCCRecipient;
-import cn.nesc.mailsender.recipient.CCRecipient;
-import cn.nesc.mailsender.recipient.Recipient;
-import cn.nesc.mailsender.recipient.TORecipient;
+import cn.nesc.mailsender.recipient.*;
 import cn.nesc.toolkit.common.validator.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +34,12 @@ public class Mail
     private String subject;
 
     private MailBody mailBody;
+
+    private String from;
+
+    private Date receiveDate;
+
+    private Date deliveredDate;
 
     private List<Recipient> toList = new ArrayList<>();
 
@@ -453,6 +456,36 @@ public class Mail
     public void setMailBody(MailBody mailBody)
     {
         this.mailBody = mailBody;
+    }
+
+    public String getFrom()
+    {
+        return from;
+    }
+
+    public void setFrom(String from)
+    {
+        this.from = from;
+    }
+
+    public Date getReceiveDate()
+    {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate)
+    {
+        this.receiveDate = receiveDate;
+    }
+
+    public Date getDeliveredDate()
+    {
+        return deliveredDate;
+    }
+
+    public void setDeliveredDate(Date deliveredDate)
+    {
+        this.deliveredDate = deliveredDate;
     }
 
     public List<Recipient> getToList()

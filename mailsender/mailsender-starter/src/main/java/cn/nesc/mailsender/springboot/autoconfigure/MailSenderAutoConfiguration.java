@@ -31,7 +31,7 @@ public class MailSenderAutoConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    public MailSenderFactory itrusCloudFactory() throws Exception
+    public MailSenderFactory mailSenderFactory() throws Exception
     {
         SpringClientFactoryBean factory = new SpringClientFactoryBean();
         factory.setMailServer(this.configurePerproties.getMailServer());

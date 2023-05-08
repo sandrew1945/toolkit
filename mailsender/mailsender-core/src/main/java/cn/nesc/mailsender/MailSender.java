@@ -16,10 +16,7 @@ import cn.nesc.mailsender.exceptions.MailSenderException;
 import cn.nesc.mailsender.mail.Attachment;
 import cn.nesc.mailsender.mail.EmailType;
 import cn.nesc.mailsender.mail.Mail;
-import cn.nesc.mailsender.recipient.BCCRecipient;
-import cn.nesc.mailsender.recipient.CCRecipient;
 import cn.nesc.mailsender.recipient.Recipient;
-import cn.nesc.mailsender.recipient.TORecipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +28,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -350,84 +346,6 @@ public class MailSender
         this.password = password;
     }
 
-    /*
-    public static void main(String[] args)
-    {
-        // change accordingly
-        String to = "42951690@qq.com";
-
-        // change accordingly
-        String from = "6800@nesc.cn";
-
-        // or IP address
-        String host = "mail.nesc.cn";
-
-        // mail id
-        final String username = "6800@nesc.cn";
-
-        // correct password for gmail id
-        final String password = "wb830615&";
-
-        System.out.println("TLSEmail Start");
-        // Get the session object
-
-        // Get system properties
-        Properties properties = System.getProperties();
-
-        // Setup mail server
-        properties.setProperty("mail.smtp.host", host);
-
-        // SSL Port
-//        properties.put("mail.smtp.port", "465");
-
-        // enable authentication
-        properties.put("mail.smtp.auth", "true");
-
-        // SSL Factory
-        properties.put("mail.smtp.socketFactory.port", "465");
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.ssl.trust", "*");
-        // creating Session instance referenced to
-        // Authenticator object to pass in
-        // Session.getInstance argument
-        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator()
-        {
-
-            // override the getPasswordAuthentication
-            // method
-            protected PasswordAuthentication getPasswordAuthentication()
-            {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        //compose the message
-        try
-        {
-            // javax.mail.internet.MimeMessage class is mostly
-            // used for abstraction.
-            MimeMessage message = new MimeMessage(session);
-
-            // header field of the header.
-            message.setFrom(new InternetAddress(from));
-
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("subject");
-            message.setText("Hello, aas is sending email ");
-
-            // Send message
-            Transport.send(message);
-            System.out.println("Yo it has been sent..");
-        }
-        catch (MessagingException mex)
-        {
-            mex.printStackTrace();
-        }
-    }
-
-     */
-
-
     public static void main(String[] args)
     {
         try
@@ -435,39 +353,44 @@ public class MailSender
             MailSender sender = new MailSender();
             sender.setUsername("6800@nesc.cn");
             sender.setMailServer("mail.nesc.cn");
-            sender.setPassword("wb830615&");
+            sender.setPassword("password");
 //            sender.sendMail("42951690@qq.com", "主题", "内容哦", EmailType.PLAIN);
 //            sender.sendMailWithAttachment("42951690@qq.com", "6800@nesc.cn", "zhuti", "<h1>This is actual message</h1>", EmailType.HTML, "/Users/summer/Desktop/22.sql");
-            List<Recipient> recipients = new ArrayList<>();
-            Recipient to = new TORecipient("42951690@qq.com");
-            Recipient cc = new CCRecipient("1254687833@qq.com");
-            Recipient bcc = new BCCRecipient("6800@nesc.cn");
-            recipients.add(to);
+
+
+            sender.sendSimpleMail("42951690@qq.com", "主题", "内容哦", EmailType.PLAIN);
+
+
+
+//            List<Recipient> recipients = new ArrayList<>();
+//            Recipient to = new TORecipient("42951690@qq.com");
+//            Recipient cc = new CCRecipient("1254687833@qq.com");
+//            Recipient bcc = new BCCRecipient("6800@nesc.cn");
+//            recipients.add(to);
 //            recipients.add(cc);
 //            recipients.add(bcc);
-
-            List<Attachment> attachments = new ArrayList<>();
-            Attachment a1 = new Attachment("/Users/summer/Desktop/22.sql");
-            Attachment a2 = new Attachment("/Users/summer/Desktop/东北ICRM无限期license.zip");
-            attachments.add(a1);
-            attachments.add(a2);
-            sender.sendCustomMail(recipients, "打开看看", "<h1><font color=\"red\">很棒啊</font></h1>", EmailType.HTML, attachments, mimeMessage -> {
-                try
-                {
-                    mimeMessage.addHeader("Disposition-Notification-To", "1");
-                    mimeMessage.reply(true);
-                    mimeMessage.saveChanges();
-                }
-                catch (MessagingException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            });
+//            List<Attachment> attachments = new ArrayList<>();
+//            Attachment a1 = new Attachment("/Users/summer/Desktop/22.sql");
+//            Attachment a2 = new Attachment("/Users/summer/Desktop/东北ICRM无限期license.zip");
+//            attachments.add(a1);
+//            attachments.add(a2);
+//            sender.sendCustomMail(recipients, "打开看看", "<h1><font color=\"red\">很棒啊</font></h1>", EmailType.HTML, attachments, mimeMessage -> {
+//                try
+//                {
+//                    mimeMessage.addHeader("Disposition-Notification-To", "1");
+//                    mimeMessage.reply(true);
+//                    mimeMessage.saveChanges();
+//                }
+//                catch (MessagingException e)
+//                {
+//                    throw new RuntimeException(e);
+//                }
+//            });
         }
-        catch (MailFormatException e)
-        {
-            throw new RuntimeException(e);
-        }
+//        catch (MailFormatException e)
+//        {
+//            throw new RuntimeException(e);
+//        }
         catch (MailSenderException e)
         {
             throw new RuntimeException(e);
