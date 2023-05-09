@@ -190,12 +190,12 @@ public class MailReader
      * @Author summer
      * @Description 读取标题或正文包含keywords的邮件
      * @Date 16:56 2023/5/5
-     * @Param [folderName, keywords, consumer]
+     * @Param [folderName, keyword, consumer]
      * @return void
      **/
-    public void readEmailContains(String folderName, String keywords, Consumer<Message> consumer) throws MailSenderException
+    public void readEmailContains(String folderName, String keyword, Consumer<Message> consumer) throws MailSenderException
     {
-        SearchTerm condition = new OrTerm(new SubjectTerm(keywords), new BodyTerm(keywords));
+        SearchTerm condition = new OrTerm(new SubjectTerm(keyword), new BodyTerm(keyword));
         readEmailCustomized(folderName, condition, consumer);
     }
 
@@ -203,12 +203,12 @@ public class MailReader
      * @Author summer
      * @Description 读取标题或正文包含keywords的邮件
      * @Date 17:03 2023/5/5
-     * @Param [folderName, keywords]
+     * @Param [folderName, keyword]
      * @return java.util.List<cn.nesc.mailsender.mail.Mail>
      **/
-    public List<Mail> readEmailContains(String folderName, String keywords) throws MailSenderException
+    public List<Mail> readEmailContains(String folderName, String keyword) throws MailSenderException
     {
-        SearchTerm condition = new OrTerm(new SubjectTerm(keywords), new BodyTerm(keywords));
+        SearchTerm condition = new OrTerm(new SubjectTerm(keyword), new BodyTerm(keyword));
         return readEmailCustomized(folderName, condition);
     }
 
@@ -216,12 +216,12 @@ public class MailReader
      * @Author summer
      * @Description 读取指定日期后标题或正文包含keywords的邮件
      * @Date 10:12 2023/5/8
-     * @Param [folderName, keywords, afterDate, consumer]
+     * @Param [folderName, keyword, afterDate, consumer]
      * @return void
      **/
-    public void readEmailContainsAfterDate(String folderName, String keywords, LocalDate afterDate, Consumer<Message> consumer) throws MailSenderException
+    public void readEmailContainsAfterDate(String folderName, String keyword, LocalDate afterDate, Consumer<Message> consumer) throws MailSenderException
     {
-        SearchTerm keywordsCond = new OrTerm(new SubjectTerm(keywords), new BodyTerm(keywords));
+        SearchTerm keywordsCond = new OrTerm(new SubjectTerm(keyword), new BodyTerm(keyword));
         Date date = DateTimeUtil.convertDate(afterDate);
         SearchTerm dateCond = new ReceivedDateTerm(ComparisonTerm.GE, date);
         SearchTerm condition = new AndTerm(keywordsCond, dateCond);
@@ -233,12 +233,12 @@ public class MailReader
      * @Author summer
      * @Description 读取指定日期后标题或正文包含keywords的邮件
      * @Date 10:15 2023/5/8
-     * @Param [folderName, keywords, afterDate]
+     * @Param [folderName, keyword, afterDate]
      * @return java.util.List<cn.nesc.mailsender.mail.Mail>
      **/
-    public List<Mail> readEmailContainsAfterDate(String folderName, String keywords, LocalDate afterDate) throws MailSenderException
+    public List<Mail> readEmailContainsAfterDate(String folderName, String keyword, LocalDate afterDate) throws MailSenderException
     {
-        SearchTerm keywordsCond = new OrTerm(new SubjectTerm(keywords), new BodyTerm(keywords));
+        SearchTerm keywordsCond = new OrTerm(new SubjectTerm(keyword), new BodyTerm(keyword));
         Date date = DateTimeUtil.convertDate(afterDate);
         SearchTerm dateCond = new ReceivedDateTerm(ComparisonTerm.GE, date);
         SearchTerm condition = new AndTerm(keywordsCond, dateCond);

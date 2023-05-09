@@ -36,6 +36,15 @@ public class MailSenderFactory
         return mailSender;
     }
 
+    public MailReader getMailReader()
+    {
+        MailReader mailReader = new MailReader();
+        mailReader.setMailServer(this.mailServer);
+        mailReader.setUsername(this.username);
+        mailReader.setPassword(this.password);
+        return mailReader;
+    }
+
     public String getMailServer()
     {
         return mailServer;
