@@ -34,6 +34,7 @@ public class AllianceAutoConfiguration
         factory.setAgentId(this.configurePerproties.getAgentId());
         factory.setCorpId(this.configurePerproties.getCorpId());
         factory.setCorpSecret(this.configurePerproties.getCorpSecret());
+        factory.setDummySend(this.configurePerproties.isDummySend());
         return factory.getObject();
     }
 }

@@ -29,6 +29,8 @@ public class AllianceFactory
 
     private String corpSecret;
 
+    private boolean dummySend;
+
     public MessagePusher getMessagePusher()
     {
         MessagePusher messagePusher = new MessagePusher();
@@ -36,6 +38,7 @@ public class AllianceFactory
         messagePusher.setAllianceUrl(allianceUrl);
         messagePusher.setCorpId(corpId);
         messagePusher.setCorpSecret(corpSecret);
+        messagePusher.setDummySend(dummySend);
         return messagePusher;
     }
 
@@ -77,5 +80,15 @@ public class AllianceFactory
     public void setCorpSecret(String corpSecret)
     {
         this.corpSecret = corpSecret;
+    }
+
+    public boolean isDummySend()
+    {
+        return dummySend;
+    }
+
+    public void setDummySend(boolean dummySend)
+    {
+        this.dummySend = dummySend;
     }
 }

@@ -33,6 +33,8 @@ public class SpringClientFactoryBean
 
     private String corpSecret;
 
+    private boolean dummySend;
+
 
     public void onApplicationEvent(ApplicationEvent applicationEvent)
     {
@@ -46,6 +48,7 @@ public class SpringClientFactoryBean
         allianceFactory.setAgentId(agentId);
         allianceFactory.setCorpId(corpId);
         allianceFactory.setCorpSecret(corpSecret);
+        allianceFactory.setDummySend(dummySend);
         return allianceFactory;
     }
 
@@ -102,5 +105,15 @@ public class SpringClientFactoryBean
     public void setCorpSecret(String corpSecret)
     {
         this.corpSecret = corpSecret;
+    }
+
+    public boolean isDummySend()
+    {
+        return dummySend;
+    }
+
+    public void setDummySend(boolean dummySend)
+    {
+        this.dummySend = dummySend;
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Created by summer on 2019/8/7.
  */
-@ConfigurationProperties("spring.toolkit.alliance")
+@ConfigurationProperties(value = "spring.toolkit.alliance", ignoreInvalidFields = true)
 public class AllianceConfigurePerproties
 {
     private String allianceUrl;
@@ -15,6 +15,8 @@ public class AllianceConfigurePerproties
     private String corpId;
 
     private String corpSecret;
+
+    private boolean dummySend = true;
 
     public String getAllianceUrl()
     {
@@ -54,5 +56,15 @@ public class AllianceConfigurePerproties
     public void setCorpSecret(String corpSecret)
     {
         this.corpSecret = corpSecret;
+    }
+
+    public boolean isDummySend()
+    {
+        return dummySend;
+    }
+
+    public void setDummySend(boolean dummySend)
+    {
+        this.dummySend = dummySend;
     }
 }

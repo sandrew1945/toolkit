@@ -228,6 +228,7 @@ public class MailReader
         readEmailCustomized(folderName, condition, consumer);
     }
 
+
     /**
      * @Author summer
      * @Description 读取指定日期后标题或正文包含keywords的邮件
@@ -241,6 +242,64 @@ public class MailReader
         Date date = DateTimeUtil.convertDate(afterDate);
         SearchTerm dateCond = new ReceivedDateTerm(ComparisonTerm.GE, date);
         SearchTerm condition = new AndTerm(keywordsCond, dateCond);
+        return readEmailCustomized(folderName, condition);
+    }
+
+    /**
+     * @Author summer
+     * @Description 读取未读邮件
+     * @Date 10:10 2023/5/9
+     * @Param [folderName, consumer]
+     * @return void
+     **/
+    public void readEmailUnread(String folderName, Consumer<Message> consumer) throws MailSenderException
+    {
+        SearchTerm condition = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+        readEmailCustomized(folderName, condition, consumer);
+    }
+
+    /**
+     * @Author summer
+     * @Description 读取未读邮件
+     * @Date 10:12 2023/5/9
+     * @Param [folderName]
+     * @return java.util.List<cn.nesc.mailsender.mail.Mail>
+     **/
+    public List<Mail> readEmailUnread(String folderName) throws MailSenderException
+    {
+        SearchTerm condition = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+        return readEmailCustomized(folderName, condition);
+    }
+
+    /**
+     * @Author summer
+     * @Description 读取指定日期之后未读邮件
+     * @Date 10:16 2023/5/9
+     * @Param [folderName, afterDate, consumer]
+     * @return void
+     **/
+    public void readEmailUnreadAfter(String folderName, LocalDate afterDate, Consumer<Message> consumer) throws MailSenderException
+    {
+        SearchTerm unreadCond = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+        Date date = DateTimeUtil.convertDate(afterDate);
+        SearchTerm dateCond = new ReceivedDateTerm(ComparisonTerm.GE, date);
+        SearchTerm condition = new AndTerm(unreadCond, dateCond);
+        readEmailCustomized(folderName, condition, consumer);
+    }
+
+    /**
+     * @Author summer
+     * @Description 读取指定日期之后未读邮件
+     * @Date 10:16 2023/5/9
+     * @Param [folderName, afterDate]
+     * @return java.util.List<cn.nesc.mailsender.mail.Mail>
+     **/
+    public List<Mail> readEmailUnreadAfter(String folderName, LocalDate afterDate) throws MailSenderException
+    {
+        SearchTerm unreadCond = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+        Date date = DateTimeUtil.convertDate(afterDate);
+        SearchTerm dateCond = new ReceivedDateTerm(ComparisonTerm.GE, date);
+        SearchTerm condition = new AndTerm(unreadCond, dateCond);
         return readEmailCustomized(folderName, condition);
     }
 
@@ -679,9 +738,14 @@ public class MailReader
 //            List<Mail> mails = reader.readEmailCustomized("inbox", condition);
 //            System.out.println(mails.size());
 
-            List<Mail> mails = reader.readEmailContainsAfterDate("inbox", "当前", DateTimeUtil.createLocalDate(2023, 4, 29));
-            System.out.println(mails.size());
+//            List<Mail> mails = reader.readEmailContainsAfterDate("inbox", "测试", DateTimeUtil.createLocalDate(2023, 5, 9));
+//            System.out.println(mails.size());
 
+//            List<Mail> mails = reader.readEmailUnread("inbox");
+//            System.out.println(mails.size());
+
+            List<Mail> mails = reader.readEmailUnreadAfter("inbox", DateTimeUtil.createLocalDate(2023, 5, 9));
+            System.out.println(mails.size());
         }
         catch (MailSenderException e)
         {

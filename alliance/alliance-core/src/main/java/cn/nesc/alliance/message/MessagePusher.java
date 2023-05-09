@@ -19,11 +19,10 @@ import cn.nesc.toolkit.common.httpclient.HttpResponse;
 import cn.nesc.toolkit.common.httpclient.PoolingHttpClientUtil;
 import cn.nesc.toolkit.common.json.JsonUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +33,9 @@ import java.util.stream.Collectors;
  **/
 public class MessagePusher
 {
+
+    private static Logger log = LoggerFactory.getLogger(MessagePusher.class);
+
     private String allianceUrl;
 
     private String agentId;
@@ -41,6 +43,8 @@ public class MessagePusher
     private String corpId;
 
     private String corpSecret;
+
+    private boolean dummySend;
 
     private final static String ACCESS_TOKEN_URL = "cgi-bin/gettoken";
 
@@ -51,6 +55,7 @@ public class MessagePusher
 
     public Result<String> sendMessage(String userCode, String message) throws AllianceException
     {
+        log.debug("Send alliance message to " + userCode + ".");
         List<String> userCodes = new ArrayList<>();
         userCodes.add(userCode);
         return sendMessage(userCodes, message);
@@ -65,7 +70,12 @@ public class MessagePusher
      **/
     public Result<String> sendMessage(List<String> userCodes, String message) throws AllianceException
     {
+        log.debug("Send alliance message to " + Arrays.toString(userCodes.toArray()) + ".");
         Result<String> result = new Result<>();
+        if (dummySend)
+        {
+            return result.requestSuccess("The dummy jobId");
+        }
         // 获取accessToken
         String accessToken = getAccessToken();
         // 推送消息
@@ -75,12 +85,12 @@ public class MessagePusher
         body.setAgentid(agentId);
         body.setTouser(toUser);
         body.setText(message);
-        System.out.println(JsonUtil.javaObject2String(body));
+        log.debug(JsonUtil.javaObject2String(body));
         HttpResponse pushRes = poolingHttpClientUtil.sendHttpPost(msgApiUrl, body, null);
         if (isSuccessful(pushRes))
         {
             PushMessageResult pushMessageResult = JsonUtil.string2JavaObject(pushRes.getReturnContent(), PushMessageResult.class);
-            result.requestSuccess(pushMessageResult.getJobId());
+            return result.requestSuccess(pushMessageResult.getJobId());
         }
         return result.requestFailure("消息发送失败");
     }
@@ -171,6 +181,16 @@ public class MessagePusher
         this.corpSecret = corpSecret;
     }
 
+    public boolean isDummySend()
+    {
+        return dummySend;
+    }
+
+    public void setDummySend(boolean dummySend)
+    {
+        this.dummySend = dummySend;
+    }
+
     public static void main(String[] args) throws AllianceException
     {
         MessagePusher pusher = new MessagePusher();
@@ -178,6 +198,7 @@ public class MessagePusher
         pusher.setAgentId("1000053");
         pusher.setCorpId("ww3c6024bb94ecef59");
         pusher.setCorpSecret("KxMuOlI-d5sdihICM4dBV4Bto0_MofSV3f5-j7grUik");
+        pusher.setDummySend(false);
 
         List<String> users = new ArrayList<>();
         users.add("6800");

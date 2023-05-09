@@ -33,6 +33,7 @@ public class Result<T>
     public Result requestSuccess(T data)
     {
         this.code = "200";
+        this.msg = "请求成功";
         this.data = data;
         return this;
     }
@@ -40,7 +41,7 @@ public class Result<T>
     public Result requestSuccess()
     {
         this.code = "200";
-        this.msg="请求成功";
+        this.msg = "请求成功";
         return this;
     }
 
