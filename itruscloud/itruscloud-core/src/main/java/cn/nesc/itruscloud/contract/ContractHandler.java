@@ -62,27 +62,27 @@ public class ContractHandler
     /**
      *  获取用户列表URL
      **/
-    private static final String USER_LIST_URL = "esp/user/getList.json";
+    private static final String USER_LIST_URL = "esp/user/getList";
 
     /**
      *  获取用户所有印章URL
      **/
-    private static final String SEAL_LIST_URL = "esp/seal/getListByUser.json";
+    private static final String SEAL_LIST_URL = "esp/seal/getListByUser";
 
     /**
      *  获取用户印章URL
      **/
-    private static final String SEAL_URL = "esp/seal/getByUser.json";
+    private static final String SEAL_URL = "esp/seal/getByUser";
 
     /**
      *  创建新合同URL
      **/
-    private static final String CREATE_CONTRACT_URL = "esp/contract/create.json";
+    private static final String CREATE_CONTRACT_URL = "esp/contract/create";
 
     /**
      *  签署合同URL
      **/
-    private static final String SIGN_CONTRACT_URL = "esp/contract/sign.json";
+    private static final String SIGN_CONTRACT_URL = "esp/contract/sign";
 
     private PoolingHttpClientUtil poolingHttpClientUtil = new PoolingHttpClientUtil();
 
