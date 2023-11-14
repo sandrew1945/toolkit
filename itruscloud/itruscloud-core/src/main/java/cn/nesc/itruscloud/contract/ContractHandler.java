@@ -22,20 +22,24 @@ import cn.nesc.itruscloud.parameter.SignContractParam;
 import cn.nesc.itruscloud.parameter.UserListParam;
 import cn.nesc.itruscloud.result.*;
 import cn.nesc.toolkit.common.codec.Base64Util;
+import cn.nesc.toolkit.common.httpclient.HttpClientUtil;
 import cn.nesc.toolkit.common.httpclient.HttpResponse;
-import cn.nesc.toolkit.common.httpclient.PoolingHttpClientUtil;
+import cn.nesc.toolkit.common.httpclient.Payload;
 import cn.nesc.toolkit.common.json.JsonUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -84,7 +88,7 @@ public class ContractHandler
      **/
     private static final String SIGN_CONTRACT_URL = "esp/contract/sign";
 
-    private PoolingHttpClientUtil poolingHttpClientUtil = new PoolingHttpClientUtil();
+    private HttpClientUtil poolingHttpClientUtil = new HttpClientUtil();
 
     /**
      * @Author summer
@@ -98,8 +102,11 @@ public class ContractHandler
         try
         {
             UserListResult userListResult = new UserListResult();
-            String userListUrl = itrusUrl.endsWith("/") ? itrusUrl : itrusUrl + "/" + USER_LIST_URL;
-            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(userListUrl, param, null);
+            String userListUrl = itrusUrl.endsWith("/") ? itrusUrl + USER_LIST_URL : itrusUrl + "/" + USER_LIST_URL;
+            Map<String, String> header = new HashMap<>();
+            handleSignature(header, param);
+            System.out.println(1);
+            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(userListUrl, new Payload<UserListParam>(param), header);
             if (isSuccessful(resp))
             {
                 userListResult = JsonUtil.string2JavaObject(resp.getReturnContent(), UserListResult.class);
@@ -147,10 +154,15 @@ public class ContractHandler
         {
             case ORG:
                 userListParam.setOrgName(userName);
+                userListParam.setUserType(1);
+                break;
             case PERSONAL:
                 userListParam.setFullname(userName);
+                userListParam.setUserType(0);
+                break;
             default:
                 userListParam.setFullname(userName);
+                userListParam.setUserType(0);
         }
         userListResult = getUserList(userListParam);
         if (userListResult.getUsers().getTotal() == 1 && this.useCache)
@@ -173,14 +185,16 @@ public class ContractHandler
         try
         {
             SealListResult sealListResult = null;
-            String sealListUrl = itrusUrl.endsWith("/") ? itrusUrl : itrusUrl + "/" + SEAL_LIST_URL;
+            String sealListUrl = itrusUrl.endsWith("/") ? itrusUrl + SEAL_LIST_URL : itrusUrl + "/" + SEAL_LIST_URL;
 
             SealParam sealParam = new SealParam();
             sealParam.setApiId(this.apiId);
             sealParam.setUserId(userId);
             sealParam.setPageNum(pageNum);
             sealParam.setPageSize(pageSize);
-            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, sealParam, null);
+            Map<String, String> header = new HashMap<>();
+            handleSignature(header, sealParam);
+            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, new Payload<SealParam>(sealParam), header);
             if (isSuccessful(resp))
             {
                 sealListResult = JsonUtil.string2JavaObject(resp.getReturnContent(), SealListResult.class);
@@ -212,7 +226,9 @@ public class ContractHandler
             sealParam.setApiId(this.apiId);
             sealParam.setUserId(userId);
             sealParam.setSealName(sealName);
-            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, sealParam, null);
+            Map<String, String> header = new HashMap<>();
+            handleSignature(header, sealParam);
+            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, new Payload<>(sealParam), header);
             if (isSuccessful(resp))
             {
                 sealResult = JsonUtil.string2JavaObject(resp.getReturnContent(), SealResult.class);
@@ -239,7 +255,10 @@ public class ContractHandler
         {
             CreateContractResult contractResult = null;
             String sealListUrl = itrusUrl.endsWith("/") ? itrusUrl : itrusUrl + "/" + CREATE_CONTRACT_URL;
-            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, createContractParam, null);
+
+            Map<String, String> header = new HashMap<>();
+            handleSignature(header, createContractParam);
+            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, new Payload<>(createContractParam), header);
             if (isSuccessful(resp))
             {
                 contractResult = JsonUtil.string2JavaObject(resp.getReturnContent(), CreateContractResult.class);
@@ -306,7 +325,10 @@ public class ContractHandler
         {
             SignContractResult signContractResult = null;
             String sealListUrl = itrusUrl.endsWith("/") ? itrusUrl : itrusUrl + "/" + SIGN_CONTRACT_URL;
-            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, signContractParam, null);
+
+            Map<String, String> header = new HashMap<>();
+            handleSignature(header, signContractParam);
+            HttpResponse resp = poolingHttpClientUtil.sendHttpPost(sealListUrl, new Payload<>(signContractParam), header);
             if (isSuccessful(resp))
             {
                 signContractResult = JsonUtil.string2JavaObject(resp.getReturnContent(), SignContractResult.class);
@@ -485,6 +507,30 @@ public class ContractHandler
         }
     }
 
+    private void handleSignature(Map<String, String> header, Object payload)
+    {
+        try
+        {
+            String hmac_sha1_algorithm = "HmacSHA1";
+            byte[] rawData = JsonUtil.javaObject2String(payload).getBytes(StandardCharsets.UTF_8);
+            Key signingKey = new SecretKeySpec(apiSecret.getBytes(), hmac_sha1_algorithm);
+            Mac mac = Mac.getInstance(hmac_sha1_algorithm);
+            mac.init(signingKey);
+            byte[] rawHmac = mac.doFinal(rawData);
+            String hmac = "HMAC-SHA1 ";
+            header.put("Content-Signature", hmac + Base64.getEncoder().encodeToString(rawHmac));
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (InvalidKeyException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private boolean isSuccessful(HttpResponse response)
     {
@@ -543,12 +589,13 @@ public class ContractHandler
         this.useCache = useCache;
     }
 
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InvalidKeyException
     {
+
         ContractHandler handler = new ContractHandler();
-        handler.setItrusUrl("http://192.18.68.87:8080");
-        handler.setApiId("dbzq_test");
-        handler.setApiSecret("47d5affd07dcade57b7c93fead05bd5a");
+        handler.setItrusUrl("http://10.1.151.3:8090/apigate");
+        handler.setApiId("b6654e31e94f40");
+        handler.setApiSecret("bdcc7546a392458199669f23ed94942f");
         handler.setUseCache(true);
         try
         {
@@ -558,14 +605,15 @@ public class ContractHandler
             userListParam.setPageNum(1);
             userListParam.setPageSize(10);
 //            userListParam.setFullname("乐毅");
+            userListParam.setUserType(1);
             userListParam.setOrgName("东证融汇证券资产管理有限公司");
             //        userListParam.setIdCardNum();
             //        userListParam.setMobile();
 
-//            UserListResult userListResult = handler.getUserList(userListParam);
-//            System.out.println(userListResult);
+            UserListResult userListResult = handler.getUserList(userListParam);
+            System.out.println(userListResult);
 //
-//            SealListResult sealListResult = handler.getSealListByUser("a377a523-3407-472f-9f67-a1ac9421d780", 1, 10);
+//            SealListResult sealListResult = handler.getSealListByUser("L02172JY1LX64YA", 1, 10);
 //            System.out.println(sealListResult);
 //
 //            SealResult sealResult = handler.getSealByUser("a377a523-3407-472f-9f67-a1ac9421d780", "法人章");
@@ -585,7 +633,7 @@ public class ContractHandler
 //                log.debug("doc ------>" + doc);
 //            });
 
-            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "法人章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"), new FileOutputStream(new File("/Users/summer/Desktop/aaa.pdf")));
+//            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "直销业务专用章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"));
             System.in.read();
         }
         catch (ItrusException e)

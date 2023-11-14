@@ -64,7 +64,6 @@ public class DownloadTemplateTest
 //            tabs.add("d_contract_our_parties");
             tabs.stream().forEach(tabName -> downloadTemplete(tabName));
 //            downloadTemplete("t_pro_base_info_th");
-
         }
         catch (Exception e)
         {

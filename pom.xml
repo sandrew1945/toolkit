@@ -14,6 +14,7 @@
         <module>alliance</module>
         <module>itruscloud</module>
         <module>mailsender</module>
+        <module>dochandler</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -30,6 +31,9 @@
         <apache-httpcore.version>4.4.14</apache-httpcore.version>
         <apache-mima.version>4.5.3</apache-mima.version>
         <apache-httpclient.version>4.5.13</apache-httpclient.version>
+        <poi.version>5.2.4</poi.version>
+        <poi.ooxml.schemas.version>4.1.2</poi.ooxml.schemas.version>
+        <jxl.version>2.6.12</jxl.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -102,6 +106,26 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${apache-httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi.ooxml.schemas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>${jxl.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

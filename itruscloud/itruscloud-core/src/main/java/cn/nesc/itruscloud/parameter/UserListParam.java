@@ -17,7 +17,7 @@ package cn.nesc.itruscloud.parameter;
  * @Author summer
  * @Date 2022/9/5 15:21
  **/
-public class UserListParam
+public class UserListParam extends ItrusBaseParam
 {
     private String apiId;
 

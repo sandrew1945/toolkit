@@ -547,6 +547,7 @@ public class HttpClientUtil
             if (null != payload)
             {
                 String jsonString = JsonUtil.javaObject2String(payload.getPayload());
+                log.debug("payload =======>" + jsonString);
                 // 解决中文乱码问题
                 StringEntity stringEntity = new StringEntity(jsonString, charset);
                 httpPost.setEntity(stringEntity);
