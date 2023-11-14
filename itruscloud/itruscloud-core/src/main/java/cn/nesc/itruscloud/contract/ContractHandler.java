@@ -593,9 +593,15 @@ public class ContractHandler
     {
 
         ContractHandler handler = new ContractHandler();
+//        新天威证书(信创)
         handler.setItrusUrl("http://10.1.151.3:8090/apigate");
         handler.setApiId("b6654e31e94f40");
         handler.setApiSecret("bdcc7546a392458199669f23ed94942f");
+//        老天威证书
+//        handler.setItrusUrl("http://192.18.68.87:8080");
+//        handler.setApiId("dbzq_test");
+//        handler.setApiSecret("47d5affd07dcade57b7c93fead05bd5a");
+
         handler.setUseCache(true);
         try
         {
@@ -633,7 +639,7 @@ public class ContractHandler
 //                log.debug("doc ------>" + doc);
 //            });
 
-//            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "直销业务专用章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"));
+            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "直销业务专用章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"), new FileOutputStream(new File("/Users/summer/Desktop/aaa.pdf")));
             System.in.read();
         }
         catch (ItrusException e)
