@@ -11,8 +11,6 @@
 
 package cn.nesc.itruscloud.bean;
 
-import java.util.Date;
-
 /**
  * @ClassName Contract
  * @Description 合同信息
@@ -31,9 +29,9 @@ public class Contract
 
     private Integer status;
 
-    private Date dateCreated;
+//    private Date dateCreated;
 
-    private Date lastUpdated;
+//    private Date lastUpdated;
 
     private String docHash;
 
@@ -97,26 +95,6 @@ public class Contract
     public void setStatus(Integer status)
     {
         this.status = status;
-    }
-
-    public Date getDateCreated()
-    {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated)
-    {
-        this.dateCreated = dateCreated;
-    }
-
-    public Date getLastUpdated()
-    {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Date lastUpdated)
-    {
-        this.lastUpdated = lastUpdated;
     }
 
     public String getDocHash()

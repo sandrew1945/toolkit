@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -28,11 +27,11 @@ public class JsonUtil
     static
     {
         mapper.registerModule(new JodaModule());
-        //        mapper.registerModule(BaseWriteOperationDeserializer.getModule());
+        // mapper.registerModule(BaseWriteOperationDeserializer.getModule());
         mapper.setTimeZone(DateTimeZone.getDefault().toTimeZone());
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setDateFormat(new SimpleDateFormat("yyyyMMdd"));
+//         mapper.setDateFormat(new SimpleDateFormat("yyyyMMdd"));
     }
 
     public static void registerModule(SimpleModule module)
