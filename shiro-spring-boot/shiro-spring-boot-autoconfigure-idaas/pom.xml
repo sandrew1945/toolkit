@@ -7,8 +7,9 @@
         <version>1.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>shiro-spring-boot-autoconfigure</artifactId>
+    <artifactId>shiro-spring-boot-autoconfigure-idaas</artifactId>
     <packaging>jar</packaging>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,8 +25,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
+            <groupId>cn.nesc</groupId>
+            <artifactId>shiro-spring-boot-autoconfigure</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.nesc</groupId>
+            <artifactId>shiro-spring-boot-starter</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.nesc</groupId>

@@ -289,3 +289,152 @@ public class MyUserFilter extends UserFilter
     }
 }
 ```
+
+## 集成IDAAS
+
+要对IDAAS进行集成需要添加依赖,通过maven引入依赖,暂时不支持Gradle
+
+```xml
+<dependency>
+    <groupId>cn.nesc</groupId>
+    <artifactId>shiro-spring-boot-starter</artifactId>
+    <version>NEWEST-VERSION</version>
+</dependency>
+<dependency>
+    <groupId>cn.nesc</groupId>
+    <artifactId>shiro-spring-boot-autoconfigure-idaas</artifactId>
+    <version>NEWEST-VERSION</version>
+</dependency>
+```
+
+在项目的properties或yml文件中配置参数
+
+```yaml
+# IDAAS服务器IP、端口
+spring.toolkit.shiro.idaas.idaas-url=http://idaas-server-ip:idaas-server-port
+# 通过IDAAS登录URL
+spring.toolkit.shiro.idaas.login-url=/oauth2/sso
+# IDAAS中client-id
+spring.toolkit.shiro.idaas.client-id=CLIENT-ID-CODE
+# IDAAS中client-secret
+spring.toolkit.shiro.idaas.client-secret=CLIENT-SECRET-CODE
+# 登录IDAAS成功后跳转URL
+spring.toolkit.shiro.idaas.redirect-url=http://service-ip:service-port/oauth2/sso
+```
+
+可以使用两种方式进行登录处理,通过内置拦截器或通过自行编写登录逻辑进行登录,下面分别进行说明
+
+- 内置拦截器
+
+使用内置拦截器需要将登录的地址使用idaas拦截器进行拦截
+
+```yaml
+spring.toolkit.shiro.filter-chains-definition-mapping[x]=/oauth2/sso:idaas
+```
+
+在对应的controller里就不需要进行登录逻辑的处理,只需要处理session数据和登录成功后的跳转即可,可以参考如下用例
+
+```java
+@GetMapping(value = "/oauth2/sso")
+public void login(String code, String state, HttpServletResponse res) throws JsonException
+{
+    try
+    {
+
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated())
+        {
+            // 处理登录用户信息，存入session
+            ShiroUser shiroUser = ContextUtil.getLoginUser();
+            AclUserBean loginUser = new AclUserBean();
+            loginUser.setUserId(Integer.valueOf(shiroUser.getUserId()));
+            loginUser.setUserCode(shiroUser.getUserCode());
+            loginUser.setUserName(shiroUser.getUserName());
+            loginUser.setToken(subject.getSession().getId().toString());
+            subject.getSession().setAttribute(Constants.LOGIN_USER, loginUser);
+
+            // 处理登录成功后页面跳转
+            Serializable token = subject.getSession().getId();
+            Cookie coocie= new Cookie("quasar_template_token", token.toString());
+            coocie.setPath("/");
+            res.addCookie(coocie);
+            StringBuilder redirectURL = new StringBuilder();
+            redirectURL.append(webUrl.endsWith("/") ? webUrl : webUrl + "/");
+            redirectURL.append(StringUtils.isEmpty(state) ? "" : "#" + state);
+            res.sendRedirect(redirectURL.toString());
+        }
+    }
+    catch (Exception e)
+    {
+        log.error(e.getMessage(), e);
+        throw new JsonException(e.getMessage(), e);
+    }
+}
+```
+
+- 自行编写登录逻辑,自己创建OAuth2Token实现登录,可以参考以下用例
+
+```java
+@GetMapping(value = "/oauth2/sso")
+public void login(String code, String state, HttpServletResponse res) throws JsonException
+{
+    try
+    {
+        // 处理登录逻辑
+        OAuth2Token token = new OAuth2Token(code);
+        LoginBO loginBO = loginService.login(token);
+        // 处理登录成功后页面跳转
+        Cookie coocie= new Cookie("quasar_template_token", loginBO.getToken());
+        coocie.setPath("/");
+        res.addCookie(coocie);
+        StringBuilder redirectURL = new StringBuilder();
+        redirectURL.append(webUrl.endsWith("/") ? webUrl : webUrl + "/");
+        redirectURL.append(StringUtils.isEmpty(state) ? "" : "#" + state);
+        res.sendRedirect(redirectURL.toString());
+
+    }
+    catch (Exception e)
+    {
+        log.error(e.getMessage(), e);
+        throw new JsonException(e.getMessage(), e);
+    }
+}
+```
+
+Service中代码,subject.login(token)为验证的入口,验证成功后将用户信息写入session
+
+```java
+public LoginBO login(AuthenticationToken token) throws ServiceException
+{
+    try
+    {
+        Subject subject = SecurityUtils.getSubject();
+        LoginBO result = new LoginBO();
+        if (!subject.isAuthenticated())
+        {
+            subject.login(token);
+            ShiroUser shiroUser = (ShiroUser) ThreadContext.get("loginUser");
+            TmUserPO databaseUser = userManagerService.getUserByCode(shiroUser.getUserCode());
+            AclUserBean loginUser = new AclUserBean();
+            loginUser.setUserId(databaseUser.getUserId());
+            loginUser.setUserCode(databaseUser.getUserCode());
+            loginUser.setUserName(databaseUser.getUserName());
+            loginUser.setToken(subject.getSession().getId().toString());
+            subject.getSession().setAttribute(Constants.LOGIN_USER, loginUser);
+            result = loginConvertor.toLoginBO(loginUser);
+            return result;
+        }
+        else
+        {
+            AclUserBean loginUser = (AclUserBean) subject.getSession().getAttribute(Constants.LOGIN_USER);
+            result = loginConvertor.toLoginBO(loginUser);
+            return result;
+        }
+    }
+    catch (Exception e)
+    {
+        log.error(e.getMessage(), e);
+        throw new ServiceException("登录失败", e);
+    }
+}
+```

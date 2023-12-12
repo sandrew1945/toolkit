@@ -14,6 +14,7 @@
     <modules>
         <module>shiro-spring-boot-autoconfigure</module>
         <module>shiro-spring-boot-starter</module>
+        <module>shiro-spring-boot-autoconfigure-idaas</module>
     </modules>
 
     <properties>
@@ -51,6 +52,11 @@
                         <artifactId>spring-boot-starter-logging</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>cn.nesc</groupId>
+                <artifactId>common-tool</artifactId>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

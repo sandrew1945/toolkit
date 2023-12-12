@@ -8,11 +8,23 @@ package cn.nesc.shiro.spring.boot.autoconfigure;
  **/
 public class ShiroUser
 {
+
+    private String userId;
     private String userCode;
 
     private String userName;
 
     private String password;
+
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
 
     public String getUserCode()
     {

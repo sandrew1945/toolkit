@@ -35,6 +35,8 @@ public class ShiroConfigurePerproties
 
     private boolean frontBackEndIndependent = false;    // 是否前后端分离模式
 
+    private IDAAS idaas;
+
     public String getLoginUrl()
     {
         return loginUrl;
@@ -133,5 +135,15 @@ public class ShiroConfigurePerproties
     public void setFrontBackEndIndependent(boolean frontBackEndIndependent)
     {
         this.frontBackEndIndependent = frontBackEndIndependent;
+    }
+
+    public IDAAS getIdaas()
+    {
+        return idaas;
+    }
+
+    public void setIdaas(IDAAS idaas)
+    {
+        this.idaas = idaas;
     }
 }
