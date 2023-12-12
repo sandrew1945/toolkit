@@ -289,7 +289,6 @@ public class MyUserFilter extends UserFilter
     }
 }
 ```
-
 ## 集成IDAAS
 
 要对IDAAS进行集成需要添加依赖,通过maven引入依赖,暂时不支持Gradle
@@ -372,7 +371,13 @@ public void login(String code, String state, HttpServletResponse res) throws Jso
 }
 ```
 
-- 自行编写登录逻辑,自己创建OAuth2Token实现登录,可以参考以下用例
+- 自行编写登录逻辑
+
+使用内置拦截器需要将登录的url配置为不拦截,并自己创建OAuth2Token实现登录,可以参考以下用例
+
+```yaml
+spring.toolkit.shiro.filter-chains-definition-mapping[x]=/oauth2/sso:anon
+```
 
 ```java
 @GetMapping(value = "/oauth2/sso")
