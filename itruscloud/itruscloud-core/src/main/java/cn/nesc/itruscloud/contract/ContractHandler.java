@@ -29,6 +29,7 @@ import cn.nesc.toolkit.common.json.JsonUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -283,11 +284,12 @@ public class ContractHandler
     {
         try
         {
+
             CreateContractParam createContractParam = new CreateContractParam();
 
             // 合同信息
             Contract contract = new Contract();
-            contract.setTitle(title);
+            contract.setTitle(StringUtils.isEmpty(title) ? "" : title.substring(0, 64));
             contract.setDocNum(docNum);
             contract.setDocType("pdf");
             contract.setDoc(Base64Util.encode(contractFile));
