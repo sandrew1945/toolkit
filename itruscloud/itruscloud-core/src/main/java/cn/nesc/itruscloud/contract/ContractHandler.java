@@ -264,6 +264,12 @@ public class ContractHandler
             {
                 contractResult = JsonUtil.string2JavaObject(resp.getReturnContent(), CreateContractResult.class);
             }
+            else
+            {
+                JsonNode jsonNode = JsonUtil.string2JsonObject(resp.getReturnContent());
+                JsonNode message = jsonNode.get("message");
+                throw new ItrusException(message.textValue());
+            }
             return contractResult;
         }
         catch (Exception e)
@@ -289,7 +295,13 @@ public class ContractHandler
 
             // 合同信息
             Contract contract = new Contract();
-            contract.setTitle(StringUtils.isEmpty(title) ? "" : title.substring(0, 64));
+
+            String fixedTitle = title;
+            if (StringUtils.isEmpty(title) || title.length() > 64)
+            {
+                fixedTitle = title.substring(0, 64);
+            }
+            contract.setTitle(fixedTitle);
             contract.setDocNum(docNum);
             contract.setDocType("pdf");
             contract.setDoc(Base64Util.encode(contractFile));
@@ -334,6 +346,12 @@ public class ContractHandler
             if (isSuccessful(resp))
             {
                 signContractResult = JsonUtil.string2JavaObject(resp.getReturnContent(), SignContractResult.class);
+            }
+            else
+            {
+                JsonNode jsonNode = JsonUtil.string2JsonObject(resp.getReturnContent());
+                JsonNode message = jsonNode.get("message");
+                throw new ItrusException(message.textValue());
             }
             return signContractResult;
         }
@@ -593,7 +611,6 @@ public class ContractHandler
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InvalidKeyException
     {
-
         ContractHandler handler = new ContractHandler();
 //        新天威证书(信创)
         handler.setItrusUrl("http://10.1.151.3:8090/apigate");
