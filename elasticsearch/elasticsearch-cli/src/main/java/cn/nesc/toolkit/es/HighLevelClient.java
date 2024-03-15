@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2021, 东北证券股份有限公司
- * FileName: HighLevelClient
- * Author:   summer
- * Date:     2021/12/29 10:52
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.toolkit.es;
 
 import cn.nesc.toolkit.common.json.JacksonValidator;

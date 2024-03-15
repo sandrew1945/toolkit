@@ -194,7 +194,7 @@ public class MessagePusher
     public static void main(String[] args) throws AllianceException
     {
         MessagePusher pusher = new MessagePusher();
-        pusher.setAllianceUrl("https://qywxlocal.nesc.cn:7443");
+        pusher.setAllianceUrl("https://qywx.demo.cn:7443");
         pusher.setAgentId("1000053");
         pusher.setCorpId("ww3c6024bb94ecef59");
         pusher.setCorpSecret("KxMuOlI-d5sdihICM4dBV4Bto0_MofSV3f5-j7grUik");

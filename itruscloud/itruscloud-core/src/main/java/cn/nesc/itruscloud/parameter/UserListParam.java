@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2022, 东北证券股份有限公司
- * FileName: UserListParam
- * Author:   summer
- * Date:     2022/9/5 15:21
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.itruscloud.parameter;
 
 /**

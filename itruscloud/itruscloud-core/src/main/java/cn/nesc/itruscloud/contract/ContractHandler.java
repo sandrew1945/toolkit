@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2022, 东北证券股份有限公司
- * FileName: ContractHandler
- * Author:   summer
- * Date:     2022/9/5 15:11
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.itruscloud.contract;
 
 import cn.nesc.itruscloud.bean.Contract;
@@ -612,15 +601,9 @@ public class ContractHandler
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InvalidKeyException
     {
         ContractHandler handler = new ContractHandler();
-//        新天威证书(信创)
-        handler.setItrusUrl("http://10.1.151.3:8090/apigate");
-        handler.setApiId("b6654e31e94f40");
-        handler.setApiSecret("bdcc7546a392458199669f23ed94942f");
-//        老天威证书
-//        handler.setItrusUrl("http://192.18.68.87:8080");
-//        handler.setApiId("dbzq_test");
-//        handler.setApiSecret("47d5affd07dcade57b7c93fead05bd5a");
-
+        handler.setItrusUrl("http://localhost:8090/apigate");
+        handler.setApiId("xxxxxx");
+        handler.setApiSecret("xxxxxxxxxxxxxxxx");
         handler.setUseCache(true);
         try
         {
@@ -629,9 +612,9 @@ public class ContractHandler
             userListParam.setApiId(handler.getApiId());
             userListParam.setPageNum(1);
             userListParam.setPageSize(10);
-//            userListParam.setFullname("乐毅");
+//            userListParam.setFullname("乐*");
             userListParam.setUserType(1);
-            userListParam.setOrgName("东证融汇证券资产管理有限公司");
+            userListParam.setOrgName("有限公司");
             //        userListParam.setIdCardNum();
             //        userListParam.setMobile();
 
@@ -644,21 +627,15 @@ public class ContractHandler
 //            SealResult sealResult = handler.getSealByUser("a377a523-3407-472f-9f67-a1ac9421d780", "法人章");
 //            System.out.println(sealResult);
 
-//            CreateContractResult contractResult = handler.createNewContract("a377a523-3407-472f-9f67-a1ac9421d780", "测试合同2", "HT-1235", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"), "中国标准时间");
+//            CreateContractResult contractResult = handler.createNewContract("a377a523-3407-472f-9f67-a1ac9421d780", "测试合同2", "HT-1235", new File(""), "中国标准时间");
 //            System.out.println(contractResult.getContract().getContractId());
 
 //            SignContractResult signContractResult = handler.signContract("4d298eab-565f-49e5-bd4a-1962003423c1", "a377a523-3407-472f-9f67-a1ac9421d780", "法人章");
 //            System.out.println("合同 ---->" + signContractResult.getContract().getDoc());
-//            Base64Util.decode(signContractResult.getContract().getDoc(), new File("/Users/summer/Desktop/合同.pdf"));
+//            Base64Util.decode(signContractResult.getContract().getDoc(), new File(""));
 
-//            String encodedDoc = handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "法人章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"));
-//            System.out.println("--->" + encodedDoc);
 
-//            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "法人章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"), doc -> {
-//                log.debug("doc ------>" + doc);
-//            });
-
-            handler.signContractReadily("东证融汇证券资产管理有限公司", UserType.ORG, "直销业务专用章", "title", "HT-555", "中国标准时间", new File("/Users/summer/Desktop/ldsf-client-manual.pdf"), new FileOutputStream(new File("/Users/summer/Desktop/aaa.pdf")));
+            handler.signContractReadily("有限公司", UserType.ORG, "sealName", "title", "HT-555", "keyword", new File("/filepath/unsealFile.pdf"), new FileOutputStream(new File("/filepath/sealedFile.pdf")));
             System.in.read();
         }
         catch (ItrusException e)

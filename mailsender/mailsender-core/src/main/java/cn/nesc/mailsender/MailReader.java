@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2023, 东北证券股份有限公司
- * FileName: MailReader
- * Author:   summer
- * Date:     2023/5/5 10:31
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.mailsender;
 
 import cn.nesc.mailsender.exceptions.MailFormatException;
@@ -667,8 +656,8 @@ public class MailReader
         try
         {
             MailReader reader = new MailReader();
-            reader.setMailServer("mail.nesc.cn");
-            reader.setUsername("6800@nesc.cn");
+            reader.setMailServer("mail.xxx.com");
+            reader.setUsername("user@xxx.com");
             reader.setPassword("password");
             //            reader.getFolderStatus("INBOX");
 

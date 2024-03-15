@@ -66,7 +66,6 @@ public class ExcelResult
 	 * 
 	 * Function    : 添加EXCEL数据
 	 * LastUpdate  : 2012-5-11
-	 * @param sheetNum
 	 * @param rowNum
 	 * @param content
 	 */
@@ -91,8 +90,6 @@ public class ExcelResult
 	 * 
 	 * Function    : 获取EXCEL数据(如果验证通过返回EXCEL内容，严整不通过返回错误信息)
 	 * LastUpdate  : 2012-5-11
-	 * @param sheetNum
-	 * @param rowNum
 	 * @return
 	 */
 	public Container getResult()

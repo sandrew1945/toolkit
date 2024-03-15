@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2021, 东北证券股份有限公司
- * FileName: Types
- * Author:   summer
- * Date:     2021/12/31 13:47
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.toolkit.es.common;
 
 /**

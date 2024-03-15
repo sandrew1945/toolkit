@@ -1,14 +1,3 @@
-/**
- * Copyright (C), 2015-2022, 东北证券股份有限公司
- * FileName: IESClientFactory
- * Author:   summer
- * Date:     2022/1/4 10:51
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- **/
-
 package cn.nesc.toolkit.es;
 
 /**
