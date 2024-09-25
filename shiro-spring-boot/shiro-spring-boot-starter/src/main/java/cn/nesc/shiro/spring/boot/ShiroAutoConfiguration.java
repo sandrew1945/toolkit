@@ -4,7 +4,6 @@ package cn.nesc.shiro.spring.boot;
 import cn.nesc.shiro.spring.boot.autoconfigure.AccountAuthorizationRealm;
 import cn.nesc.shiro.spring.boot.autoconfigure.separate.HeaderSessionManager;
 import cn.nesc.shiro.spring.boot.autoconfigure.separate.HeaderShiroFilterFactoryBean;
-import com.sun.javafx.binding.StringFormatter;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -91,7 +90,7 @@ public class ShiroAutoConfiguration
                     String[] mappingPair = mapping.split(":");
                     if (null == mappingPair || mappingPair.length != 2)
                     {
-                        throw new RuntimeException(StringFormatter.format("FilterChainDefinitionMapping [%s] is not correct format.", mapping).getValue());
+                        throw new RuntimeException(String.format("FilterChainDefinitionMapping [%s] is not correct format.", mapping));
                     }
                     filterChainDefinitionMapping.put(mappingPair[0], mappingPair[1]);
                 });
