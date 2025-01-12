@@ -35,7 +35,7 @@
             <dependency>
                 <groupId>cn.nesc</groupId>
                 <artifactId>common-tool</artifactId>
-                <version>${project.version}</version>
+                <version>1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
