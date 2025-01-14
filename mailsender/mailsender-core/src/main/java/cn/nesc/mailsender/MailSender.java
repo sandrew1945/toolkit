@@ -305,32 +305,32 @@ public class MailSender
         }
     }
 
-    String getMailServer()
+    public String getMailServer()
     {
         return mailServer;
     }
 
-    void setMailServer(String mailServer)
+    public void setMailServer(String mailServer)
     {
         this.mailServer = mailServer;
     }
 
-    String getUsername()
+    public String getUsername()
     {
         return username;
     }
 
-    void setUsername(String username)
+    public void setUsername(String username)
     {
         this.username = username;
     }
 
-    String getPassword()
+    public String getPassword()
     {
         return password;
     }
 
-    void setPassword(String password)
+    public void setPassword(String password)
     {
         this.password = password;
     }
