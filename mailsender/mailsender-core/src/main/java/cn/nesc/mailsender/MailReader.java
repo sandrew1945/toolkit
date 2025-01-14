@@ -626,7 +626,7 @@ public class MailReader
         return mailServer;
     }
 
-    void setMailServer(String mailServer)
+    public void setMailServer(String mailServer)
     {
         this.mailServer = mailServer;
     }
@@ -636,7 +636,7 @@ public class MailReader
         return username;
     }
 
-    void setUsername(String username)
+    public void setUsername(String username)
     {
         this.username = username;
     }
@@ -646,7 +646,7 @@ public class MailReader
         return password;
     }
 
-    void setPassword(String password)
+    public void setPassword(String password)
     {
         this.password = password;
     }
